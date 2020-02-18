@@ -31,7 +31,8 @@ namespace ProAgil.API
             services.AddDbContext<ProAgilContext>(
                 x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection"))
             );
-
+            //sempre que precisar do IProAgilRepository, impletamenta o ProAgilRepository
+            services.AddScoped<IProAgilRepository, ProAgilRepository>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //Configuração de permisão - CORS
