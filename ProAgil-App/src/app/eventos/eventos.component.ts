@@ -2,6 +2,10 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { EventoService } from '../_services/evento.service';
 import { Evento } from '../_models/Evento';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { defineLocale, BsLocaleService, ptBrLocale } from 'ngx-bootstrap';
+import { templateJitUrl } from '@angular/compiler';
+defineLocale('pt-br', ptBrLocale);
 
 @Component({
   selector: 'app-eventos',
@@ -10,19 +14,23 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
   providers: [EventoService] //injeção de um serviço(se não tiver o "providedIn: 'root'" no service)
 })
 export class EventosComponent implements OnInit {
-
-
   eventosFiltrados: Evento[];
   eventos: Evento[];//define a variavel como array []
+
+  evento: Evento;
   imagemLargura: number = 50;
   imagemMargem: number = 2;
   mostrarImagem: boolean = false;
-  modalRef: BsModalRef;
+  registerForm: FormGroup;
 
   constructor(
     private eventoService: EventoService,
-    private modalService: BsModalService
-    ) { }
+    private modalService: BsModalService,
+    private fb: FormBuilder,
+    private localeService: BsLocaleService
+    ) {
+      this.localeService.use('pt-br');
+     }
 
   _filtroLista: string;
   get filtroLista(): string{
@@ -34,13 +42,15 @@ export class EventosComponent implements OnInit {
     this.eventosFiltrados = this.filtroLista ? this.filtrarEventos(this.filtroLista) : this.eventos;
   }
 
-  openModal(template: TemplateRef<any>){
-    this.modalRef = this.modalService.show(template);
+  openModal(template: any){
+    this.registerForm.reset();
+    template.show();
   }
 
   //executa antes da interface ser renderizada
   ngOnInit() {
     this.getEventos();
+    this.validation();
   }
 
   filtrarEventos(filtrarPor: string): Evento[]{
@@ -52,6 +62,34 @@ export class EventosComponent implements OnInit {
 
   alternarImagem(){
     this.mostrarImagem = !this.mostrarImagem; 
+  }
+
+  validation(){
+    this.registerForm = this.fb.group({
+      tema: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+      local: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+      dataEvento: ['', Validators.required],
+      qtdPessoas: ['', [Validators.required, Validators.max(120000)]],
+      imagemURL: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+      telefone: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(12)]],
+      email: ['', [Validators.required, Validators.email]],
+    })
+  }
+
+  salvarAlteracao(template: any){
+    if(this.registerForm.valid){
+      this.evento = Object.assign({}, this.registerForm.value);
+      this.eventoService.postEvento(this.evento).subscribe(
+        (novoEvento: Evento) => {
+          console.log(novoEvento);
+          template.hide();
+          this.getEventos();
+        },
+        error =>{
+          console.log(error);
+        }
+      );
+    }
   }
 
   getEventos(){
