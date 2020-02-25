@@ -4,7 +4,7 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-
+    
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
@@ -18,5 +18,25 @@
         </li>
       </ul>
     </div>
-  </div>
+    
+        
+    <ul class="navbar-nav">
+      <li class="nav-item dropdown" dropdown>
+        <a dropdownToggle class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        Felipe
+      </a>
+      <div *dropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        <a class="dropdown-item" href="#">
+          Perfil
+        </a>
+        <div role="separator" class="divider"></div>
+        <a class="dropdown-item" href="#">
+          Sair
+        </a>
+      </div>
+    </li>
+  </ul>
+
+</div>
 </nav>

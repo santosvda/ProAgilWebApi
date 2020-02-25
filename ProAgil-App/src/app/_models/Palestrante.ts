@@ -4,10 +4,10 @@ import { Evento } from "./Evento";
 export interface Palestrante {
         id: number;
         nome: string;
-        minicurriculo: string;
-        imagemurl: string;
+        miniCurriculo: string;
+        imagemURL: string;
         telefone: string;
         email: string;
-        redessociais: RedeSocial[];
-        palestranteseventos: Evento[];
+        redesSociais: RedeSocial[];
+        palestrantesEventos: Evento[];
 }
