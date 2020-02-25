@@ -17,6 +17,7 @@ import { EventosComponent } from './eventos/eventos.component';
 import { NavComponent } from './nav/nav.component';
 
 import { DateTimeFormatPipe } from './_helps/DateTimeFormat.pipe';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
    declarations: [
@@ -38,7 +39,8 @@ import { DateTimeFormatPipe } from './_helps/DateTimeFormat.pipe';
       ReactiveFormsModule
    ],
    providers: [
-      EventoService
+      EventoService,
+      DatePipe
    ],
    bootstrap: [
       AppComponent

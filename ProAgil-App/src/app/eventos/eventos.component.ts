@@ -15,7 +15,10 @@ defineLocale('pt-br', ptBrLocale);
 })
 export class EventosComponent implements OnInit {
   eventosFiltrados: Evento[];
+
   eventos: Evento[];//define a variavel como array []
+  modoSalvar = "post";
+  bodyDeletarEvento = "";
 
   evento: Evento;
   imagemLargura: number = 50;
@@ -40,6 +43,36 @@ export class EventosComponent implements OnInit {
   set filtroLista(value: string){
     this._filtroLista = value;
     this.eventosFiltrados = this.filtroLista ? this.filtrarEventos(this.filtroLista) : this.eventos;
+  }
+
+  excluirEvento(evento: Evento, template: any) {
+    this.openModal(template);
+    this.evento = evento;
+    this.bodyDeletarEvento = `Tem certeza que deseja excluir o Evento: ${evento.tema}, Código: ${evento.id}`;
+  }
+  
+  confirmeDelete(template: any) {
+    console.log(this.evento.id)
+    this.eventoService.deleteEvento(this.evento.id).subscribe(
+      () => {
+          template.hide();
+          this.getEventos();
+        }, error => {
+          console.log(error);
+        }
+    );
+  }
+
+  editarEvento(_evento: Evento, template: any){
+    this.modoSalvar = "put";
+    this.openModal(template);
+    this.evento = _evento;
+    this.registerForm.patchValue(_evento);
+  }
+
+  novoEvento(template: any){
+    this.modoSalvar = "post";
+    this.openModal(template);
   }
 
   openModal(template: any){
@@ -78,17 +111,31 @@ export class EventosComponent implements OnInit {
 
   salvarAlteracao(template: any){
     if(this.registerForm.valid){
-      this.evento = Object.assign({}, this.registerForm.value);
-      this.eventoService.postEvento(this.evento).subscribe(
-        (novoEvento: Evento) => {
-          console.log(novoEvento);
-          template.hide();
-          this.getEventos();
-        },
-        error =>{
-          console.log(error);
-        }
-      );
+      if(this.modoSalvar === "post"){
+        this.evento = Object.assign({}, this.registerForm.value);
+        this.eventoService.postEvento(this.evento).subscribe(
+          (novoEvento: Evento) => {
+            console.log(novoEvento);
+            template.hide();
+            this.getEventos();
+          },
+          error =>{
+            console.log(error);
+          }
+        );
+      } else{
+        this.evento = Object.assign({id: this.evento.id}, this.registerForm.value);
+        this.eventoService.putEvento(this.evento).subscribe(
+          (novoEvento: Evento) => {
+            console.log(novoEvento);
+            template.hide();
+            this.getEventos();
+          },
+          error =>{
+            console.log(error);
+          }
+        );
+      }
     }
   }
 
