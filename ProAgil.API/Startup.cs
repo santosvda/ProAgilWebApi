@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,6 +34,16 @@ namespace ProAgil.API
             );
             //sempre que precisar do IProAgilRepository, impletamenta o ProAgilRepository
             services.AddScoped<IProAgilRepository, ProAgilRepository>();
+
+            //Informar a aplicação que a mesma trabalha com AutoMapper
+            /*
+                    *Domain*    *API*  
+                Ex: Evento <--> EventoDto
+
+                DTO = Data transfer object
+            */
+            services.AddAutoMapper();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //Configuração de permisão - CORS
