@@ -30,7 +30,7 @@ namespace ProAgil.API.Controllers
             {
                 var eventos = await _repo.GetAllEventoAsync(true);
 
-                var results = _mapper.Map<IEnumerable<EventoDto>>(eventos);//_mapper.Map<EventoDto[]>(eventos); works too!
+                var results = _mapper.Map<EventoDto[]>(eventos);//_mapper.Map<EventoDto[]>(eventos); works too!
 
                 return Ok(results);
             }
