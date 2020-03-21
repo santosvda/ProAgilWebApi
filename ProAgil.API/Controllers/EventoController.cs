@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.IO;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -38,6 +40,36 @@ namespace ProAgil.API.Controllers
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"BD falhou{ex.Message}");
             }
+        }
+
+        [HttpPost("upload")]
+        public async Task<IActionResult> upload()
+        {
+            try
+            {
+                //todo arquivo vem como um array- logo [0]
+                var file = Request.Form.Files[0];//pega o arquivo
+                var folderName = Path.Combine("Resources","Images");// diretorio onde será armazenado
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);//combina o diretório que deseja salvar mais o diretório da aplicação
+
+                if(file.Length > 0){
+                    //filename que será armazenado esta vindo do header
+                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName;//
+                    var fullPath = Path.Combine(pathToSave, fileName.Replace("\"", "").Trim());//determina o caminho completo e trata se vier com " ou espaço
+
+                    using (var stream = new FileStream(fullPath, FileMode.Create)){
+                        //arquivo que recebeu e copia para o stream
+                        file.CopyTo(stream);
+                    }
+                }
+                return Ok();
+            }
+            catch (System.Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"BD falhou{ex.Message}");
+            }
+
+            return BadRequest("Erro ao tentar realizar upload");
         }
         [HttpGet("{EventoId}")]
         public async Task<IActionResult> Get(int EventoId)
