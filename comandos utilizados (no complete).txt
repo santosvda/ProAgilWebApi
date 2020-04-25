@@ -1,1 +1,2 @@
 npm install ngx-toastr --save
+dotnet ef --startup-project ../ProAgil.API migrations add init (Repository)
