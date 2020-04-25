@@ -33,14 +33,14 @@ namespace ProAgil.Repository
                     que vem de Role e User e são obrigatorias
                     */
                     userRole.HasOne(ur => ur.Role)
-                    .WithMany(r =>UserRoles)
-                    .HasForeignKey(ur => ur.RoleId)
-                    .IsRequired();
-
+                        .WithMany(r => r.UserRoles)
+                        .HasForeignKey(ur => ur.RoleId)
+                        .IsRequired();
+                    
                     userRole.HasOne(ur => ur.User)
-                    .WithMany(r =>UserRoles)
-                    .HasForeignKey(ur => ur.UserId)
-                    .IsRequired();
+                        .WithMany(r => r.UserRoles)
+                        .HasForeignKey(ur => ur.UserId)
+                        .IsRequired();
 
                     /*
                     Custei a enteder esta merda
