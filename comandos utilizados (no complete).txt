@@ -1,3 +1,5 @@
 npm install ngx-toastr --save
 dotnet ef --startup-project ../ProAgil.API migrations add init (Repository)
 dotnet ef --startup-project ../ProAgil.API database update
+npm i @auth0/angular-jwt
+ng g g auth/auth

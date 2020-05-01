@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -20,9 +20,14 @@ import { PalestrantesComponent } from './palestrantes/palestrantes.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ContatosComponent } from './contatos/contatos.component';
 import { TituloComponent } from './_shared/titulo/titulo.component';
+import { UserComponent } from './user/user.component';
+import { LoginComponent } from './user/login/login.component';
+import { RegistrationComponent } from './user/registration/registration.component';
 
 import { DateTimeFormatPipe } from './_helps/DateTimeFormat.pipe';
 import { DatePipe } from '@angular/common';
+import { AuthInterceptor } from './auth/auth.interceptor';
+
 
 
 @NgModule({
@@ -34,7 +39,10 @@ import { DatePipe } from '@angular/common';
       DashboardComponent,
       ContatosComponent,
       TituloComponent,
-      DateTimeFormatPipe
+      DateTimeFormatPipe,
+      UserComponent,
+      LoginComponent,
+      RegistrationComponent
    ],
    imports: [
       BrowserModule,
@@ -47,12 +55,20 @@ import { DatePipe } from '@angular/common';
       FormsModule,
       ReactiveFormsModule,
       BrowserAnimationsModule,
-      ToastrModule.forRoot() 
-      //requiredanimationsmodule\\\\nToastrModule.forRoot(\\\\ntimeOut
+      ToastrModule.forRoot({
+         timeOut: 3000,
+         preventDuplicates: true,
+         progressBar: true
+      })
    ],
    providers: [
       EventoService,
-      DatePipe
+      DatePipe,
+      {
+         provide: HTTP_INTERCEPTORS,
+         useClass: AuthInterceptor,
+         multi: true //permite multiplas requisições
+      }
    ],
    bootstrap: [
       AppComponent

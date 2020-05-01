@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Evento } from '../_models/Evento';
 
@@ -9,12 +9,16 @@ import { Evento } from '../_models/Evento';
 })
 export class EventoService {
   baseURL = 'http://localhost:5000/api/evento';
+  //tokenHeader: HttpHeaders;
 
-constructor(private http:HttpClient) { }
+constructor(private http:HttpClient) { 
+   //this.tokenHeader = new HttpHeaders({'Authorization': `Bearer ${localStorage.getItem('token')}` });
+   //{ headers: this.tokenHeader }
+}
 
   getAllEvento(): Observable<Evento[]>{
     //retorna um observable https://tableless.com.br/entendendo-rxjs-observable-com-angular/
-    return this.http.get<Evento[]>(this.baseURL);
+    return this.http.get<Evento[]>(this.baseURL, );
   }
 
   getEventoByTema(tema: string): Observable<Evento[]>{
@@ -26,7 +30,7 @@ constructor(private http:HttpClient) { }
   }
 
   postEvento(evento: Evento){
-    return this.http.post(`${this.baseURL}`, evento);
+    return this.http.post(`${this.baseURL}`, evento,);
   }
 
   postUpload(file: File, name: string){
