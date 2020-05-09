@@ -128,7 +128,7 @@ export class EventoEditComponent implements OnInit {
   
       reader.onload = (event: any) => this.imagemURL = event.target.result;
 
-      this.file = event.target.files;
+      //this.file = event.target.files;
       reader.readAsDataURL(file[0]);
     }
 

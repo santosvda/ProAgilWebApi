@@ -5,3 +5,7 @@ npm i @auth0/angular-jwt
 ng g g auth/auth
 npm i ngx-mask
 npm i ngx-currency
+npm i bootswatch
+npm install source-map-explorer --save-dev
+ng build --prod --source-map
+dotnet publish -o /Users/felip/Desktop/ProAgil
