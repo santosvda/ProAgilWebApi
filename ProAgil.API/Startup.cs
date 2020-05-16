@@ -40,7 +40,7 @@ namespace ProAgil.API
         {
             //configuração de conexão com o banco
             services.AddDbContext<ProAgilContext>(
-                x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection"))
+                x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
             );
 
             /*
